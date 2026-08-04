@@ -1,0 +1,174 @@
+   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; 
+    background-color: #FFE8BD; 
+}
+
+.tela-inteira {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+.painel-principal {
+    background-color: #7AA9A3;
+    width: 50%;
+    position: relative;
+    padding: 0 8%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Lado do Cadastro (Card na esquerda, sombra para direita/baixo) */
+.painel-principal.lado-esquerdo {
+    border-top-right-radius: 50px;
+    box-shadow: 50px 40px #1C4C70; 
+}
+
+/* Lado do Login (Card na direita, sombra para esquerda/baixo) */
+.painel-principal.lado-direito {
+    border-top-left-radius: 50px;
+    box-shadow: -50px 40px #1C4C70; 
+}
+
+.painel-principal h2 {
+    font-family: 'Just Another Hand', cursive;
+    color: #FFE8BD;
+    font-size: 6rem;
+    margin-bottom: 20px;
+    font-weight: 400;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+/* Fita decorativa topo */
+.fita-decorativa {
+    position: absolute;
+    top: 0;
+    width: 65px;
+    height: 170px;
+    background-color: #1C4C70;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 83%, 0 100%);
+}
+
+.lado-esquerdo .fita-decorativa { left: 8%; }
+.lado-direito .fita-decorativa { right: 8%; }
+
+.formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.campo label {
+    color: #FFE8BD;
+    font-size: 1.6rem;
+    padding-left: 15px;
+    font-weight: 500;
+}
+
+.campo input {
+    background-color: #FFE8BD;
+    border: 4px solid #1C4C70;
+    border-radius: 40px;
+    height: 55px;
+    padding: 0 25px;
+    font-size: 1.4rem;
+    color: #1C4C70;
+    outline: none;
+    width: 100%;
+    box-shadow: 0 0 0 3px #FFE8BD;
+}
+
+.botao-acao {
+    font-family: 'Just Another Hand', cursive;
+    background-color: #1C4C70;
+    color: #FFE8BD;
+    border: none;
+    border-radius: 100px;
+    padding: 2px 0px;
+    font-size: 4rem;
+    cursor: pointer;
+    width: 50%;
+    align-self: center;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.botao-acao:hover {
+    background-color: #153954;
+    transform: scale(1.02);
+}
+
+.link-redefinir {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    color: #1C4C70;
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: -10px;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.painel-decorativo {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-repeat: no-repeat;
+}
+
+/* Manchas posicionadas para a direita (Tela Cadastro) */
+.painel-decorativo.manchas-direita {
+    background-image: 
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'><path d='M100,0 C150,20 180,80 250,50 C300,30 300,0 300,0 Z' fill='%237AA9A3'/><path d='M110,15 C150,35 180,90 240,65' stroke='white' stroke-dasharray='4,4' fill='none' stroke-width='2'/></svg>"),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='70' cy='50' rx='20' ry='25' fill='%237AA9A3'/><ellipse cx='70' cy='50' rx='15' ry='19' stroke='white' stroke-dasharray='3,3' fill='none' stroke-width='1.5'/></svg>"),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'><path d='M50,200 C80,140 160,130 220,170 C270,200 300,200 300,200 Z' fill='%237AA9A3'/><path d='M65,190 C90,145 160,140 210,175' stroke='white' stroke-dasharray='4,4' fill='none' stroke-width='2'/></svg>");
+    background-position: top right, 80% 30%, bottom right;
+    background-size: 70% auto, 25% auto, 75% auto;
+}
+
+/* Manchas espelhadas para a esquerda (Tela Login) */
+.painel-decorativo.manchas-esquerda {
+    background-image: 
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'><path d='M0,0 C50,20 80,80 150,50 C200,30 200,0 200,0 Z' fill='%237AA9A3'/><path d='M10,15 C50,35 80,90 140,65' stroke='white' stroke-dasharray='4,4' fill='none' stroke-width='2'/></svg>"),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='30' cy='50' rx='20' ry='25' fill='%237AA9A3'/><ellipse cx='30' cy='50' rx='15' ry='19' stroke='white' stroke-dasharray='3,3' fill='none' stroke-width='1.5'/></svg>"),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'><path d='M0,200 C30,140 110,130 170,170 C220,200 250,200 250,200 Z' fill='%237AA9A3'/><path d='M15,190 C40,145 110,140 160,175' stroke='white' stroke-dasharray='4,4' fill='none' stroke-width='2'/></svg>");
+    background-position: top left, 20% 30%, bottom left;
+    background-size: 70% auto, 25% auto, 75% auto;
+}
+
+.conteudo-decor {
+    text-align: center;
+    padding: 20px;
+    max-width: 85%;
+    z-index: 1;
+}
+
+.painel-decorativo h1 {
+    font-family: 'Just Another Hand', cursive;
+    color: #1C4C70;
+    font-size: 5.5rem;
+    margin-bottom: 30px;
+    font-weight: 400;
+    line-height: 0.9;
+    letter-spacing: 1px;
+}

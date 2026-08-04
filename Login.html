@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bege-bg': '#FFE8BD',
+                        'verde-painel': '#7AA9A3',
+                        'azul-escuro': '#1C4C70',
+                        'azul-hover': '#153954',
+                    },
+                    fontFamily: {
+                        'hand': ['"Just Another Hand"', 'cursive'],
+                        'sans': ['"Be Vietnam Pro"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Just+Another+Hand&display=swap" rel="stylesheet">
+    
+    <style>
+        .fita-clip {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 83%, 0 100%);
+        }
+        .bg-manchas-esquerda {
+            background-image: 
+                url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'><path d='M0,0 C50,20 80,80 150,50 C200,30 200,0 200,0 Z' fill='%237AA9A3'/><path d='M10,15 C50,35 80,90 140,65' stroke='white' stroke-dasharray='4,4' fill='none' stroke-width='2'/></svg>"),
+                url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='30' cy='50' rx='20' ry='25' fill='%237AA9A3'/><ellipse cx='30' cy='50' rx='15' ry='19' stroke='white' stroke-dasharray='3,3' fill='none' stroke-width='1.5'/></svg>"),
+                url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'><path d='M0,200 C30,140 110,130 170,170 C220,200 250,200 250,200 Z' fill='%237AA9A3'/><path d='M15,190 C40,145 110,140 160,175' stroke='white' stroke-dasharray='4,4' fill='none' stroke-width='2'/></svg>");
+            background-position: top left, 20% 30%, bottom left;
+            background-size: 60% auto, 20% auto, 65% auto;
+        }
+        /* Sombra ajustada para ficar interna e não empurrar a tela */
+        .sombra-painel {
+            box-shadow: -35px 0 0 0 #1C4C70;
+        }
+    </style>
+</head>
+<body class="bg-bege-bg w-screen h-screen overflow-hidden font-sans m-0 p-0">
+
+    <div class="flex w-full h-full">
+        
+        <div class="w-1/2 h-full flex justify-center items-center relative bg-no-repeat bg-manchas-esquerda p-8">
+            <div class="text-center max-w-[80%] z-10">
+                <h1 class="font-hand text-azul-escuro text-[4.5rem] leading-[0.9] mb-6 font-normal tracking-wide">
+                    Não possui uma conta?
+                </h1>
+                <a href="Cadastro.html" class="font-hand bg-azul-escuro text-bege-bg rounded-full py-1 text-[3rem] w-60 mx-auto block text-center transition-all duration-200 hover:bg-azul-hover hover:scale-105">
+                    Cadastrar-se
+                </a>
+            </div>
+        </div>
+
+        <div class="bg-verde-painel w-1/2 h-full relative px-[8%] flex flex-col justify-center rounded-tl-[50px] sombra-painel">
+            
+            <div class="absolute top-0 right-[10%] w-[55px] h-[140px] bg-azul-escuro fita-clip"></div>
+            
+            <h2 class="font-hand text-bege-bg text-[5rem] mb-4 font-normal text-center tracking-[2px]">
+                Login
+            </h2>
+            
+            <form class="flex flex-col gap-5 w-full max-w-md mx-auto" onsubmit="logar(event)" action="PHP/logAcao.php" method="POST">
+                
+                <div class="flex flex-col gap-1">
+                    <label for="email" class="text-bege-bg text-xl pl-4 font-medium">Email</label>
+                    <input type="email" id="email" required class="bg-bege-bg border-4 border-azul-escuro rounded-full h-12 px-6 text-lg text-azul-escuro outline-none w-full shadow-[0_0_0_3px_#FFE8BD]">
+                </div>
+                
+                <div class="flex flex-col gap-1">
+                    <label for="senha" class="text-bege-bg text-xl pl-4 font-medium">Senha</label>
+                    <input type="password" id="senha" required class="bg-bege-bg border-4 border-azul-escuro rounded-full h-12 px-6 text-lg text-azul-escuro outline-none w-full shadow-[0_0_0_3px_#FFE8BD]">
+                </div>
+                
+                <button type="submit" class="font-hand bg-azul-escuro text-bege-bg border-none rounded-full py-1 text-[3.2rem] cursor-pointer w-48 self-center text-center transition-all duration-200 hover:bg-azul-hover hover:scale-105 mt-2">
+                    Entrar
+                </button>
+                
+                <a href="#" class="font-sans text-azul-escuro text-center text-base underline font-medium" onclick="abrirPopUp(event)">
+                    Redefinir senha
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <dialog id="popUpRedefinir" class="p-6 rounded-xl border-2 border-gray-800 max-w-md w-11/12 shadow-2xl backdrop:bg-black/50 fixed inset-0 m-auto">
+        <h3 class="text-xl font-bold mb-2 text-gray-800">Redefinir Senha</h3>
+        <p class="text-sm text-gray-600 mb-4">Informe seus dados para validar sua conta:</p>
+        
+        <form onsubmit="validarCodigoEEnviar(event)" class="flex flex-col gap-4">
+            <div>
+                <label for="email-redefinir" class="block text-sm font-medium text-gray-700">Email cadastrado:</label>
+                <input type="email" id="email-redefinir" required class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label for="codigo-redefinir" class="block text-sm font-medium text-gray-700">Código de verificação <span class="text-xs text-gray-500">(Use: 12345)</span>:</label>
+                <input type="text" id="codigo-redefinir" required placeholder="Digite 12345" class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div class="flex gap-3 justify-end mt-2">
+                <button type="button" onclick="fecharPopUp()" class="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 rounded-md transition-colors">Cancelar</button>
+                <button type="submit" class="px-4 py-2 text-sm bg-azul-escuro hover:bg-azul-hover text-white font-medium rounded-md transition-colors">Confirmar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="popUpNovaSenha" class="p-6 rounded-xl border-2 border-gray-800 max-w-md w-11/12 shadow-2xl backdrop:bg-black/50 fixed inset-0 m-auto">
+        <h3 class="text-xl font-bold mb-2 text-gray-800">Criar Nova Senha</h3>
+        <p class="text-sm text-gray-600 mb-4">Digite e confirme sua nova senha abaixo:</p>
+        
+        <form onsubmit="salvarNovaSenha(event)" class="flex flex-col gap-4">
+            <div>
+                <label for="nova-senha" class="block text-sm font-medium text-gray-700">Nova Senha:</label>
+                <input type="password" id="nova-senha" required class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label for="confirmar-nova-senha" class="block text-sm font-medium text-gray-700">Confirmar Nova Senha:</label>
+                <input type="password" id="confirmar-nova-senha" required class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div class="flex gap-3 justify-end mt-2">
+                <button type="button" onclick="fecharPopUpNovaSenha()" class="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 rounded-md transition-colors">Cancelar</button>
+                <button type="submit" class="px-4 py-2 text-sm bg-azul-escuro hover:bg-azul-hover text-white font-medium rounded-md transition-colors">Salvar Senha</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script src="JAVA/script.js"></script>
+</body>
+</html>
