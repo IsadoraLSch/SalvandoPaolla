@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <script>
         tailwind.config = {
             theme: {
@@ -25,13 +23,9 @@
             }
         }
     </script>
-
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Just+Another+Hand&display=swap" rel="stylesheet">
-    
     <style>
-        .fita-clip {
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 83%, 0 100%);
-        }
+        .fita-clip { clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 83%, 0 100%); }
         .bg-manchas-esquerda {
             background-image: 
                 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'><path d='M0,0 C50,20 80,80 150,50 C200,30 200,0 200,0 Z' fill='%237AA9A3'/><path d='M10,15 C50,35 80,90 140,65' stroke='white' stroke-dasharray='4,4' fill='none' stroke-width='2'/></svg>"),
@@ -40,16 +34,12 @@
             background-position: top left, 20% 30%, bottom left;
             background-size: 60% auto, 20% auto, 65% auto;
         }
-        /* Sombra ajustada para ficar interna e não empurrar a tela */
-        .sombra-painel {
-            box-shadow: -35px 0 0 0 #1C4C70;
-        }
+        .sombra-painel { box-shadow: -35px 0 0 0 #1C4C70; }
     </style>
 </head>
 <body class="bg-bege-bg w-screen h-screen overflow-hidden font-sans m-0 p-0">
 
     <div class="flex w-full h-full">
-        
         <div class="w-1/2 h-full flex justify-center items-center relative bg-no-repeat bg-manchas-esquerda p-8">
             <div class="text-center max-w-[80%] z-10">
                 <h1 class="font-hand text-azul-escuro text-[4.5rem] leading-[0.9] mb-6 font-normal tracking-wide">
@@ -62,30 +52,25 @@
         </div>
 
         <div class="bg-verde-painel w-1/2 h-full relative px-[8%] flex flex-col justify-center rounded-tl-[50px] sombra-painel">
-            
             <div class="absolute top-0 right-[10%] w-[55px] h-[140px] bg-azul-escuro fita-clip"></div>
+            <h2 class="font-hand text-bege-bg text-[5rem] mb-4 font-normal text-center tracking-[2px]">Login</h2>
             
-            <h2 class="font-hand text-bege-bg text-[5rem] mb-4 font-normal text-center tracking-[2px]">
-                Login
-            </h2>
-            
-            <form class="flex flex-col gap-5 w-full max-w-md mx-auto" onsubmit="logar(event)" action="PHP/logAcao.php" method="POST">
-                
+            <form class="flex flex-col gap-5 w-full max-w-md mx-auto" action="PHP/actionLogin.php" method="POST">
                 <div class="flex flex-col gap-1">
                     <label for="email" class="text-bege-bg text-xl pl-4 font-medium">Email</label>
-                    <input type="email" id="email" required class="bg-bege-bg border-4 border-azul-escuro rounded-full h-12 px-6 text-lg text-azul-escuro outline-none w-full shadow-[0_0_0_3px_#FFE8BD]">
+                    <input type="email" id="email" name="email" required class="bg-bege-bg border-4 border-azul-escuro rounded-full h-12 px-6 text-lg text-azul-escuro outline-none w-full shadow-[0_0_0_3px_#FFE8BD]">
                 </div>
                 
                 <div class="flex flex-col gap-1">
                     <label for="senha" class="text-bege-bg text-xl pl-4 font-medium">Senha</label>
-                    <input type="password" id="senha" required class="bg-bege-bg border-4 border-azul-escuro rounded-full h-12 px-6 text-lg text-azul-escuro outline-none w-full shadow-[0_0_0_3px_#FFE8BD]">
+                    <input type="password" id="senha" name="senha" required class="bg-bege-bg border-4 border-azul-escuro rounded-full h-12 px-6 text-lg text-azul-escuro outline-none w-full shadow-[0_0_0_3px_#FFE8BD]">
                 </div>
                 
                 <button type="submit" class="font-hand bg-azul-escuro text-bege-bg border-none rounded-full py-1 text-[3.2rem] cursor-pointer w-48 self-center text-center transition-all duration-200 hover:bg-azul-hover hover:scale-105 mt-2">
                     Entrar
                 </button>
                 
-                <a href="#" class="font-sans text-azul-escuro text-center text-base underline font-medium" onclick="abrirPopUp(event)">
+                <a href="#" class="font-sans text-azul-escuro text-center text-base underline font-medium" onclick="abrirPopUpRedefinir(event)">
                     Redefinir senha
                 </a>
             </form>
@@ -93,49 +78,111 @@
     </div>
 
     <dialog id="popUpRedefinir" class="p-6 rounded-xl border-2 border-gray-800 max-w-md w-11/12 shadow-2xl backdrop:bg-black/50 fixed inset-0 m-auto">
-        <h3 class="text-xl font-bold mb-2 text-gray-800">Redefinir Senha</h3>
-        <p class="text-sm text-gray-600 mb-4">Informe seus dados para validar sua conta:</p>
+        <h3 class="text-xl font-bold mb-2 text-gray-800">Redefinir Senha - Passo 1/2</h3>
+        <p class="text-sm text-gray-600 mb-4">Informe o seu e-mail e o código de verificação recebido.</p>
         
-        <form onsubmit="validarCodigoEEnviar(event)" class="flex flex-col gap-4">
+        <form onsubmit="validarEAvancar(event)" class="flex flex-col gap-4">
             <div>
                 <label for="email-redefinir" class="block text-sm font-medium text-gray-700">Email cadastrado:</label>
-                <input type="email" id="email-redefinir" required class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="email" id="email-redefinir" required class="mt-1 w-full p-2 border border-gray-300 rounded-md">
             </div>
 
             <div>
-                <label for="codigo-redefinir" class="block text-sm font-medium text-gray-700">Código de verificação <span class="text-xs text-gray-500">(Use: 12345)</span>:</label>
-                <input type="text" id="codigo-redefinir" required placeholder="Digite 12345" class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <label for="codigo-verificacao" class="block text-sm font-medium text-gray-700">Código de Verificação (123456):</label>
+                <input type="text" id="codigo-verificacao" placeholder="Digite 123456" required class="mt-1 w-full p-2 border border-gray-300 rounded-md">
             </div>
 
             <div class="flex gap-3 justify-end mt-2">
-                <button type="button" onclick="fecharPopUp()" class="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 rounded-md transition-colors">Cancelar</button>
-                <button type="submit" class="px-4 py-2 text-sm bg-azul-escuro hover:bg-azul-hover text-white font-medium rounded-md transition-colors">Confirmar</button>
+                <button type="button" onclick="document.getElementById('popUpRedefinir').close()" class="px-4 py-2 text-sm bg-gray-200 rounded-md">Cancelar</button>
+                <button type="submit" class="px-4 py-2 text-sm bg-azul-escuro text-white font-medium rounded-md">Avançar</button>
             </div>
         </form>
     </dialog>
 
     <dialog id="popUpNovaSenha" class="p-6 rounded-xl border-2 border-gray-800 max-w-md w-11/12 shadow-2xl backdrop:bg-black/50 fixed inset-0 m-auto">
-        <h3 class="text-xl font-bold mb-2 text-gray-800">Criar Nova Senha</h3>
-        <p class="text-sm text-gray-600 mb-4">Digite e confirme sua nova senha abaixo:</p>
+        <h3 class="text-xl font-bold mb-2 text-gray-800">Criar Nova Senha - Passo 2/2</h3>
+        <p class="text-sm text-gray-600 mb-4">Código verificado com sucesso! Digite a sua nova senha.</p>
         
-        <form onsubmit="salvarNovaSenha(event)" class="flex flex-col gap-4">
-            <div>
-                <label for="nova-senha" class="block text-sm font-medium text-gray-700">Nova Senha:</label>
-                <input type="password" id="nova-senha" required class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
+        <form action="PHP/uploadCad.php" method="POST" class="flex flex-col gap-4">
+            <input type="hidden" id="email-final" name="email">
 
             <div>
-                <label for="confirmar-nova-senha" class="block text-sm font-medium text-gray-700">Confirmar Nova Senha:</label>
-                <input type="password" id="confirmar-nova-senha" required class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <label for="nova-senha" class="block text-sm font-medium text-gray-700">Nova Senha:</label>
+                <input type="password" id="nova-senha" name="nova_senha" required class="mt-1 w-full p-2 border border-gray-300 rounded-md">
             </div>
 
             <div class="flex gap-3 justify-end mt-2">
-                <button type="button" onclick="fecharPopUpNovaSenha()" class="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 rounded-md transition-colors">Cancelar</button>
-                <button type="submit" class="px-4 py-2 text-sm bg-azul-escuro hover:bg-azul-hover text-white font-medium rounded-md transition-colors">Salvar Senha</button>
+                <button type="button" onclick="document.getElementById('popUpNovaSenha').close()" class="px-4 py-2 text-sm bg-gray-200 rounded-md">Cancelar</button>
+                <button type="submit" class="px-4 py-2 text-sm bg-azul-escuro text-white font-medium rounded-md">Salvar Senha</button>
             </div>
         </form>
     </dialog>
 
-    <script src="JAVA/script.js"></script>
+    <dialog id="popUpAlert" class="p-6 rounded-xl border-2 border-azul-escuro max-w-sm w-11/12 shadow-2xl backdrop:bg-black/50 fixed inset-0 m-auto text-center">
+        <h3 id="alertTitulo" class="text-xl font-bold mb-2 text-gray-800">Aviso</h3>
+        <p id="alertMensagem" class="text-gray-600 mb-6"></p>
+        <button onclick="document.getElementById('popUpAlert').close()" class="px-6 py-2 bg-azul-escuro text-white font-medium rounded-md">OK</button>
+    </dialog>
+
+    <script>
+        // Abrir primeiro pop-up ao clicar em "Redefinir senha"
+        function abrirPopUpRedefinir(e) {
+            e.preventDefault();
+            document.getElementById('popUpRedefinir').showModal();
+        }
+
+        // Valida o código 123456. Se estiver certo, fecha o Pop-up 1 e abre o Pop-up 2
+        function validarEAvancar(e) {
+            e.preventDefault();
+            const email = document.getElementById('email-redefinir').value;
+            const codigo = document.getElementById('codigo-verificacao').value;
+
+            if (codigo !== '123456') {
+                exibirAlert('Código Incorreto', 'O código digitado é inválido! Tente utilizar: 123456');
+                return;
+            }
+
+            // Atribui o e-mail ao formulário do segundo pop-up
+            document.getElementById('email-final').value = email;
+
+            // Transição entre os pop-ups
+            document.getElementById('popUpRedefinir').close();
+            document.getElementById('popUpNovaSenha').showModal();
+        }
+
+        // Exibir pop-up de alert genérico
+        function exibirAlert(titulo, mensagem) {
+            document.getElementById('alertTitulo').innerText = titulo;
+            document.getElementById('alertMensagem').innerText = mensagem;
+            document.getElementById('popUpAlert').showModal();
+        }
+
+        // Ler parâmetros da URL (alertas vindos dos scripts PHP)
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            
+            if (params.has('erro')) {
+                const erro = params.get('erro');
+                if (erro === 'invalido') {
+                    exibirAlert('Acesso Negado', 'E-mail ou senha incorretos!');
+                } else if (erro === 'vazio') {
+                    exibirAlert('Atenção', 'Por favor, preencha todos os campos!');
+                } else if (erro === 'email_nao_encontrado') {
+                    exibirAlert('Erro', 'Este e-mail não foi encontrado no banco de dados.');
+                }
+            }
+
+            if (params.has('msg')) {
+                const msg = params.get('msg');
+                if (msg === 'login_sucesso') {
+                    exibirAlert('Sucesso!', 'Login realizado com sucesso!');
+                } else if (msg === 'cadastrado') {
+                    exibirAlert('Sucesso!', 'Conta criada com sucesso! Faça seu login.');
+                } else if (msg === 'senha_alterada') {
+                    exibirAlert('Sucesso!', 'Sua senha foi redefinida com sucesso.');
+                }
+            }
+        });
+    </script>
 </body>
 </html>
