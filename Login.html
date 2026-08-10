@@ -79,7 +79,7 @@
 
     <dialog id="popUpRedefinir" class="p-6 rounded-xl border-2 border-gray-800 max-w-md w-11/12 shadow-2xl backdrop:bg-black/50 fixed inset-0 m-auto">
         <h3 class="text-xl font-bold mb-2 text-gray-800">Redefinir Senha - Passo 1/2</h3>
-        <p class="text-sm text-gray-600 mb-4">Informe o seu e-mail e o código de verificação recebido.</p>
+        <p class="text-sm text-gray-600 mb-4">Informe o seu e-mail cadastrado e o código de verificação.</p>
         
         <form onsubmit="validarEAvancar(event)" class="flex flex-col gap-4">
             <div>
@@ -94,21 +94,26 @@
 
             <div class="flex gap-3 justify-end mt-2">
                 <button type="button" onclick="document.getElementById('popUpRedefinir').close()" class="px-4 py-2 text-sm bg-gray-200 rounded-md">Cancelar</button>
-                <button type="submit" class="px-4 py-2 text-sm bg-azul-escuro text-white font-medium rounded-md">Avançar</button>
+                <button type="submit" id="btnAvancar" class="px-4 py-2 text-sm bg-azul-escuro text-white font-medium rounded-md">Avançar</button>
             </div>
         </form>
     </dialog>
 
     <dialog id="popUpNovaSenha" class="p-6 rounded-xl border-2 border-gray-800 max-w-md w-11/12 shadow-2xl backdrop:bg-black/50 fixed inset-0 m-auto">
         <h3 class="text-xl font-bold mb-2 text-gray-800">Criar Nova Senha - Passo 2/2</h3>
-        <p class="text-sm text-gray-600 mb-4">Código verificado com sucesso! Digite a sua nova senha.</p>
+        <p class="text-sm text-gray-600 mb-4">Código e e-mail validados! Digite sua nova senha.</p>
         
-        <form action="PHP/uploadCad.php" method="POST" class="flex flex-col gap-4">
+        <form action="PHP/uploadCad.php" method="POST" onsubmit="validarSenhasFinais(event)" class="flex flex-col gap-4">
             <input type="hidden" id="email-final" name="email">
 
             <div>
                 <label for="nova-senha" class="block text-sm font-medium text-gray-700">Nova Senha:</label>
                 <input type="password" id="nova-senha" name="nova_senha" required class="mt-1 w-full p-2 border border-gray-300 rounded-md">
+            </div>
+
+            <div>
+                <label for="confirmar-nova-senha" class="block text-sm font-medium text-gray-700">Confirmar Nova Senha:</label>
+                <input type="password" id="confirmar-nova-senha" name="confirmar_nova_senha" required class="mt-1 w-full p-2 border border-gray-300 rounded-md">
             </div>
 
             <div class="flex gap-3 justify-end mt-2">
@@ -121,68 +126,9 @@
     <dialog id="popUpAlert" class="p-6 rounded-xl border-2 border-azul-escuro max-w-sm w-11/12 shadow-2xl backdrop:bg-black/50 fixed inset-0 m-auto text-center">
         <h3 id="alertTitulo" class="text-xl font-bold mb-2 text-gray-800">Aviso</h3>
         <p id="alertMensagem" class="text-gray-600 mb-6"></p>
-        <button onclick="document.getElementById('popUpAlert').close()" class="px-6 py-2 bg-azul-escuro text-white font-medium rounded-md">OK</button>
+        <button onclick="fecharEAntilimparURL()" class="px-6 py-2 bg-azul-escuro text-white font-medium rounded-md">OK</button>
     </dialog>
 
-    <script>
-        // Abrir primeiro pop-up ao clicar em "Redefinir senha"
-        function abrirPopUpRedefinir(e) {
-            e.preventDefault();
-            document.getElementById('popUpRedefinir').showModal();
-        }
-
-        // Valida o código 123456. Se estiver certo, fecha o Pop-up 1 e abre o Pop-up 2
-        function validarEAvancar(e) {
-            e.preventDefault();
-            const email = document.getElementById('email-redefinir').value;
-            const codigo = document.getElementById('codigo-verificacao').value;
-
-            if (codigo !== '123456') {
-                exibirAlert('Código Incorreto', 'O código digitado é inválido! Tente utilizar: 123456');
-                return;
-            }
-
-            // Atribui o e-mail ao formulário do segundo pop-up
-            document.getElementById('email-final').value = email;
-
-            // Transição entre os pop-ups
-            document.getElementById('popUpRedefinir').close();
-            document.getElementById('popUpNovaSenha').showModal();
-        }
-
-        // Exibir pop-up de alert genérico
-        function exibirAlert(titulo, mensagem) {
-            document.getElementById('alertTitulo').innerText = titulo;
-            document.getElementById('alertMensagem').innerText = mensagem;
-            document.getElementById('popUpAlert').showModal();
-        }
-
-        // Ler parâmetros da URL (alertas vindos dos scripts PHP)
-        window.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(window.location.search);
-            
-            if (params.has('erro')) {
-                const erro = params.get('erro');
-                if (erro === 'invalido') {
-                    exibirAlert('Acesso Negado', 'E-mail ou senha incorretos!');
-                } else if (erro === 'vazio') {
-                    exibirAlert('Atenção', 'Por favor, preencha todos os campos!');
-                } else if (erro === 'email_nao_encontrado') {
-                    exibirAlert('Erro', 'Este e-mail não foi encontrado no banco de dados.');
-                }
-            }
-
-            if (params.has('msg')) {
-                const msg = params.get('msg');
-                if (msg === 'login_sucesso') {
-                    exibirAlert('Sucesso!', 'Login realizado com sucesso!');
-                } else if (msg === 'cadastrado') {
-                    exibirAlert('Sucesso!', 'Conta criada com sucesso! Faça seu login.');
-                } else if (msg === 'senha_alterada') {
-                    exibirAlert('Sucesso!', 'Sua senha foi redefinida com sucesso.');
-                }
-            }
-        });
-    </script>
+    <script src="JAVA/loginscript.js"></script>
 </body>
 </html>
