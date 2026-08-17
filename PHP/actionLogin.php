@@ -17,31 +17,34 @@ if (empty($email) || empty($senha_cliente)) {
 try {
     $conexao = getConexao();
 
-        // Busca o registro na tabela de LOGIN (clientes)
-    $SQL = 'SELECT * FROM clientes WHERE email = :email';
+    // Busca no banco integrando usuarios e clientes via Chave Estrangeira (usuario_id)
+    $SQL = 'SELECT u.id AS usuario_id, u.email, u.senha, c.id AS cliente_id, c.nome 
+    FROM usuarios u 
+    INNER JOIN clientes c ON u.id = c.usuario_id 
+    WHERE u.email = :email';
+
     $comando = $conexao->prepare($SQL);
     $comando->bindValue(':email', $email);
     $comando->execute();
 
-    $cliente = $comando->fetch(PDO::FETCH_ASSOC);
+    $usuario = $comando->fetch(PDO::FETCH_ASSOC);
 
-    // Salva as sessões com o prefixo 'cliente'
-    if ($cliente && (password_verify($senha_cliente, $cliente['senha']) || $senha_cliente === $cliente['senha'])) {
-        $_SESSION['cliente_id'] = $cliente['id'];
-        $_SESSION['cliente_nome'] = $cliente['nome'];
-        $_SESSION['cliente_email'] = $cliente['email'];
+    if ($usuario && (password_verify($senha_cliente, $usuario['senha']) || $senha_cliente === $usuario['senha'])) {
+    $_SESSION['cliente_id'] = $usuario['cliente_id'];
+    $_SESSION['usuario_id'] = $usuario['usuario_id'];
+    $_SESSION['usuario_nome'] = $usuario['nome'];
+    $_SESSION['usuario_email'] = $usuario['email'];
 
-        header('Location: ../Painel.php');
-        exit();
-
+    header('Location: ../Painel.php');
+    exit();
     } else {
         // Credenciais inválidas
         header('Location: ../Login.html?erro=invalido' . $dadosPreenchidos);
         exit();
     }
 
-} catch (PDOException $e) {
-    header('Location: ../Login.html?erro=invalido' . $dadosPreenchidos);
-    exit();
-}
-?>
+    } catch (PDOException $e) {
+        header('Location: ../Login.html?erro=invalido' . $dadosPreenchidos);
+        exit();
+    }
+    ?>
