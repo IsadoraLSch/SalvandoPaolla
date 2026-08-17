@@ -24,7 +24,7 @@ if ($senha_usuario !== $confirmar_senha) {
 try {
     $conexao = getConexao();
 
-    // 3. Verifica se o e-mail já está cadastrado
+    // 3. Verifica se o e-mail já está cadastrado (verifica na tabela usuarios ou clientes)
     $sqlCheck = 'SELECT id FROM usuarios WHERE email = :email';
     $cmdCheck = $conexao->prepare($sqlCheck);
     $cmdCheck->bindValue(':email', $email);
@@ -35,21 +35,43 @@ try {
         exit();
     }
 
-    // 4. Cadastra o usuário
+    // 4. Cadastra no banco de dados (Passo 1: usuarios -> Passo 2: clientes)
     $senha_hash = password_hash($senha_usuario, PASSWORD_DEFAULT);
 
-    $SQL = 'INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)';
-    $comando = $conexao->prepare($SQL);
-    $comando->bindValue(':nome', $nome);
-    $comando->bindValue(':email', $email);
-    $comando->bindValue(':senha', $senha_hash);
+    // Inicia a transação
+    $conexao->beginTransaction();
 
-    if ($comando->execute()) {
-        header('Location: ../Login.html?msg=cadastrado');
-        exit();
-    }
+    // Insert 1: Tabela 'usuarios'
+    $SQL1 = 'INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)';
+    $comando1 = $conexao->prepare($SQL1);
+    $comando1->bindValue(':nome', $nome);
+    $comando1->bindValue(':email', $email);
+    $comando1->bindValue(':senha', $senha_hash);
+    $comando1->execute();
+
+    // Obtém o ID que acabou de ser gerado na tabela usuarios
+    $idUsuario = $conexao->lastInsertId();
+
+    // Insert 2: Tabela 'clientes' (com o mesmo ID, nome, email e senha)
+    $SQL2 = 'INSERT INTO clientes (id, nome, email, senha) VALUES (:id, :nome, :email, :senha)';
+    $comando2 = $conexao->prepare($SQL2);
+    $comando2->bindValue(':id', $idUsuario);
+    $comando2->bindValue(':nome', $nome);
+    $comando2->bindValue(':email', $email);
+    $comando2->bindValue(':senha', $senha_hash);
+    $comando2->execute();
+
+    // Confirma as duas inserções no banco
+    $conexao->commit();
+
+    header('Location: ../Login.html?msg=cadastrado');
+    exit();
 
 } catch (PDOException $e) {
+    // Caso ocorra qualquer erro, desfaz as alterações em ambas as tabelas
+    if (isset($conexao) && $conexao->inTransaction()) {
+        $conexao->rollBack();
+    }
     header('Location: ../Cadastro.html?erro=banco' . $dadosPreenchidos);
     exit();
 }

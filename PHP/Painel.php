@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-// Se não houver sessão ativa, impede o acesso e redireciona para o login
-if (!isset($_SESSION['usuario_id'])) {
+// Verifica se há sessão de cliente ativa, impedindo o acesso sem login e redireciona para o login
+if (!isset($_SESSION['cliente_id'])) {
     header('Location: Login.html?erro=acesso_negado');
     exit();
 }
