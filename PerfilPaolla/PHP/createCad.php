@@ -6,16 +6,13 @@ $email = trim($_POST['email'] ?? '');
 $senha_usuario = $_POST['senha'] ?? '';
 $confirmar_senha = $_POST['confirmar_senha'] ?? '';
 
-// Monta os parâmetros para preservar o Nome e E-mail digitados
 $dadosPreenchidos = '&nome=' . urlencode($nome) . '&email=' . urlencode($email);
 
-// 1. Verifica se algum campo está vazio
 if (empty($nome) || empty($email) || empty($senha_usuario) || empty($confirmar_senha)) {
     header('Location: ../Cadastro.html?erro=vazio' . $dadosPreenchidos);
     exit();
 }
 
-// 2. Senhas diferentes: Redireciona mantendo Nome e E-mail
 if ($senha_usuario !== $confirmar_senha) {
     header('Location: ../Cadastro.html?erro=senhas_diferentes' . $dadosPreenchidos);
     exit();
@@ -24,7 +21,7 @@ if ($senha_usuario !== $confirmar_senha) {
 try {
     $conexao = getConexao();
 
-    // 3. Verifica se o e-mail já está cadastrado
+    // 1. Verifica se e-mail já existe na tabela de login (usuarios)
     $sqlCheck = 'SELECT id FROM usuarios WHERE email = :email';
     $cmdCheck = $conexao->prepare($sqlCheck);
     $cmdCheck->bindValue(':email', $email);
@@ -35,21 +32,38 @@ try {
         exit();
     }
 
-    // 4. Cadastra o usuário
     $senha_hash = password_hash($senha_usuario, PASSWORD_DEFAULT);
 
-    $SQL = 'INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)';
-    $comando = $conexao->prepare($SQL);
-    $comando->bindValue(':nome', $nome);
-    $comando->bindValue(':email', $email);
-    $comando->bindValue(':senha', $senha_hash);
+    // Inicia a transação
+    $conexao->beginTransaction();
 
-    if ($comando->execute()) {
-        header('Location: ../Login.html?msg=cadastrado');
-        exit();
-    }
+    // Insert 1: Insere login/senha na tabela 'usuarios'
+    $SQL1 = 'INSERT INTO usuarios (email, senha) VALUES (:email, :senha)';
+    $comando1 = $conexao->prepare($SQL1);
+    $comando1->bindValue(':email', $email);
+    $comando1->bindValue(':senha', $senha_hash);
+    $comando1->execute();
+
+    // Obtém a Chave Primária (id) recém-criada
+    $idUsuario = $conexao->lastInsertId();
+
+    // Insert 2: Insere os dados de perfil na tabela 'clientes' relacionando com a Chave Estrangeira (usuario_id)
+    $SQL2 = 'INSERT INTO clientes (nome, usuario_id) VALUES (:nome, :usuario_id)';
+    $comando2 = $conexao->prepare($SQL2);
+    $comando2->bindValue(':nome', $nome);
+    $comando2->bindValue(':usuario_id', $idUsuario);
+    $comando2->execute();
+
+    // Confirma a transação nas duas tabelas
+    $conexao->commit();
+
+    header('Location: ../Login.html?msg=cadastrado');
+    exit();
 
 } catch (PDOException $e) {
+    if (isset($conexao) && $conexao->inTransaction()) {
+        $conexao->rollBack();
+    }
     header('Location: ../Cadastro.html?erro=banco' . $dadosPreenchidos);
     exit();
 }

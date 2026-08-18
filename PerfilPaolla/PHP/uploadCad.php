@@ -1,85 +1,60 @@
 <?php
-session_start();
 require_once 'conf.php';
 
-// Garante que o usuário esteja logado
-if (!isset($_SESSION['usuario_id'])) {
-    header('Location: ../Login.html?erro=acesso_negado');
-    exit();
-}
-
-$id = $_SESSION['usuario_id'];
-$nome = trim($_POST['nome'] ?? '');
+$id = $_POST['id'] ?? null;
 $email = trim($_POST['email'] ?? '');
-$senha_antiga = $_POST['senha_antiga'] ?? '';
+$nome = trim($_POST['nome'] ?? '');
 $nova_senha = $_POST['nova_senha'] ?? '';
-
-if (empty($nome) || empty($email)) {
-    header('Location: ../perfil.php?erro=campos_vazios');
-    exit();
-}
+$confirmar_nova_senha = $_POST['confirmar_nova_senha'] ?? '';
 
 try {
     $conexao = getConexao();
 
-    // 1. Busca os dados atuais do usuário para validar a senha antiga se for alterá-la
-    $sqlBusca = 'SELECT senha FROM usuarios WHERE id = :id';
-    $cmdBusca = $conexao->prepare($sqlBusca);
-    $cmdBusca->bindValue(':id', $id);
-    $cmdBusca->execute();
-    $usuario = $cmdBusca->fetch(PDO::FETCH_ASSOC);
-
-    if (!$usuario) {
-        header('Location: ../Login.html');
-        exit();
-    }
-
-    // 2. Se informou nova senha, faz as validações de segurança
-    $atualizarSenha = false;
-    $senha_hash = $usuario['senha'];
-
-    if (!empty($nova_senha)) {
-        // Valida se a senha antiga foi informada
-        if (empty($senha_antiga)) {
-            header('Location: ../perfil.php?erro=senha_antiga_obrigatoria');
+    // 1. Redefinição de Senha por E-mail (Modal de Login)
+    if (!$id && !empty($email) && !empty($nova_senha)) {
+        
+        // Validação no servidor: confirmação de senhas
+        if ($nova_senha !== $confirmar_nova_senha) {
+            header('Location: ../Login.html?erro=senhas_diferentes&email=' . urlencode($email));
             exit();
         }
 
-        // Valida se a senha antiga está correta
-        if (!password_verify($senha_antiga, $usuario['senha']) && $senha_antiga !== $usuario['senha']) {
-            header('Location: ../perfil.php?erro=senha_antiga_incorreta');
-            exit();
-        }
-
-        // Valida se a nova senha é igual à antiga
-        if ($senha_antiga === $nova_senha) {
-            header('Location: ../perfil.php?erro=senha_igual_antiga');
-            exit();
-        }
-
+        // Criptografa a nova senha
         $senha_hash = password_hash($nova_senha, PASSWORD_DEFAULT);
-        $atualizarSenha = true;
-    }
+        
+        $SQL = 'UPDATE usuarios SET senha = :senha WHERE email = :email';
+        $comando = $conexao->prepare($SQL);
+        $comando->bindValue(':senha', $senha_hash);
+        $comando->bindValue(':email', $email);
+        $comando->execute();
 
-    // 3. Atualiza os dados no Banco
-    $SQL = 'UPDATE usuarios SET nome = :nome, email = :email, senha = :senha WHERE id = :id';
-    $comando = $conexao->prepare($SQL);
-    $comando->bindValue(':nome', $nome);
-    $comando->bindValue(':email', $email);
-    $comando->bindValue(':senha', $senha_hash);
-    $comando->bindValue(':id', $id);
+        // Verifica se a senha foi realmente atualizada
+        if ($comando->rowCount() > 0) {
+            header('Location: ../Login.html?msg=senha_alterada');
+            exit();
+        } else {
+            header('Location: ../Login.html?erro=email_nao_encontrado');
+            exit();
+        }
+    } 
 
-    if ($comando->execute()) {
-        // Atualiza as variáveis de sessão
-        $_SESSION['usuario_nome'] = $nome;
-        $_SESSION['usuario_email'] = $email;
+    // 2. Edição de Dados via Painel (Update do CRUD)
+    if ($id && !empty($nome) && !empty($email)) {
+        $SQL = 'UPDATE usuarios SET nome = :nome, email = :email WHERE id = :id';
+        $comando = $conexao->prepare($SQL);
+        $comando->bindValue(':nome', $nome);
+        $comando->bindValue(':email', $email);
+        $comando->bindValue(':id', $id);
 
-        header('Location: ../perfil.php?msg=sucesso');
-        exit();
+        if ($comando->execute()) {
+            header('Location: ../Painel.php?msg=editado');
+            exit();
+        } else {
+            echo 'Erro ao atualizar usuário no banco de dados.';
+        }
     }
 
 } catch (PDOException $e) {
-    header('Location: ../perfil.php?erro=banco');
-    exit();
+    echo 'Erro no processamento: ' . $e->getMessage();
 }
 ?>
