@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bege-bg': '#FFE8BD',
+                        'verde-painel': '#7AA9A3',
+                        'azul-escuro': '#1C4C70',
+                        'azul-hover': '#153954',
+                    },
+                    fontFamily: {
+                        'hand': ['"Just Another Hand"', 'cursive'],
+                        'sans': ['"Be Vietnam Pro"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Just+Another+Hand&display=swap" rel="stylesheet">
+    <style>
+        .fita-clip { clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 83%, 0 100%); }
+        .bg-manchas-direita {
+            background-image: 
+                url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'><path d='M100,0 C150,20 180,80 250,50 C300,30 300,0 300,0 Z' fill='%237AA9A3'/><path d='M110,15 C150,35 180,90 240,65' stroke='white' stroke-dasharray='4,4' fill='none' stroke-width='2'/></svg>"),
+                url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='70' cy='50' rx='20' ry='25' fill='%237AA9A3'/><ellipse cx='70' cy='50' rx='15' ry='19' stroke='white' stroke-dasharray='3,3' fill='none' stroke-width='1.5'/></svg>"),
+                url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'><path d='M50,200 C80,140 160,130 220,170 C270,200 300,200 300,200 Z' fill='%237AA9A3'/><path d='M65,190 C90,145 160,140 210,175' stroke='white' stroke-dasharray='4,4' fill='none' stroke-width='2'/></svg>");
+            background-position: top right, 80% 30%, bottom right;
+            background-size: 60% auto, 20% auto, 65% auto;
+        }
+        .sombra-painel-esquerdo { box-shadow: 35px 0 0 0 #1C4C70; }
+    </style>
+</head>
+<body class="bg-bege-bg w-screen h-screen overflow-hidden font-sans m-0 p-0">
+
+    <div class="flex w-full h-full">
+        <div class="bg-verde-painel w-1/2 h-full relative px-[8%] flex flex-col justify-center rounded-tr-[50px] sombra-painel-esquerdo z-10">
+            <div class="absolute top-0 left-[10%] w-[55px] h-[140px] bg-azul-escuro fita-clip"></div>
+            
+            <h2 class="font-hand text-bege-bg text-[4.5rem] mb-2 font-normal text-center tracking-[2px]">
+                Cadastro
+            </h2>
+            
+            <form class="flex flex-col gap-3 w-full max-w-md mx-auto" action="PHP/createCad.php" method="POST">
+                <div class="flex flex-col gap-1">
+                    <label for="nome" class="text-bege-bg text-lg pl-4 font-medium">Nome</label>
+                    <input type="text" id="nome" name="nome" required class="bg-bege-bg border-4 border-azul-escuro rounded-full h-11 px-5 text-base text-azul-escuro outline-none w-full shadow-[0_0_0_3px_#FFE8BD]">
+                </div>
+                
+                <div class="flex flex-col gap-1">
+                    <label for="email" class="text-bege-bg text-lg pl-4 font-medium">Email</label>
+                    <input type="email" id="email" name="email" required class="bg-bege-bg border-4 border-azul-escuro rounded-full h-11 px-5 text-base text-azul-escuro outline-none w-full shadow-[0_0_0_3px_#FFE8BD]">
+                </div>
+                
+                <div class="flex flex-col gap-1">
+                    <label for="senha" class="text-bege-bg text-lg pl-4 font-medium">Senha</label>
+                    <input type="password" id="senha" name="senha" required class="bg-bege-bg border-4 border-azul-escuro rounded-full h-11 px-5 text-base text-azul-escuro outline-none w-full shadow-[0_0_0_3px_#FFE8BD]">
+                </div>
+            
+                <div class="flex flex-col gap-1">
+                    <label for="confirmar-senha" class="text-bege-bg text-lg pl-4 font-medium">Confirmar senha</label>
+                    <input type="password" id="confirmar-senha" name="confirmar_senha" required class="bg-bege-bg border-4 border-azul-escuro rounded-full h-11 px-5 text-base text-azul-escuro outline-none w-full shadow-[0_0_0_3px_#FFE8BD]">
+                </div>
+                
+                <button type="submit" class="font-hand bg-azul-escuro text-bege-bg border-none rounded-full py-1 text-[2.8rem] cursor-pointer w-52 self-center text-center transition-all duration-200 hover:bg-azul-hover hover:scale-105 mt-2">
+                    Cadastre-se
+                </button>
+            </form>
+        </div>
+
+        <div class="w-1/2 h-full flex justify-center items-center relative bg-no-repeat bg-manchas-direita p-8">
+            <div class="text-center max-w-[80%] z-10">
+                <h1 class="font-hand text-azul-escuro text-[4.5rem] leading-[0.9] mb-6 font-normal tracking-wide">
+                    Já possui uma conta?
+                </h1>
+                <a href="Login.html" class="font-hand bg-azul-escuro text-bege-bg rounded-full py-1 text-[3rem] w-60 mx-auto block text-center transition-all duration-200 hover:bg-azul-hover hover:scale-105">
+                    Logar-se
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <dialog id="popUpAlertCad" class="p-6 rounded-xl border-2 border-azul-escuro max-w-sm w-11/12 shadow-2xl backdrop:bg-black/50 fixed inset-0 m-auto text-center">
+        <h3 id="alertTituloCad" class="text-xl font-bold mb-2 text-gray-800">Aviso</h3>
+        <p id="alertMensagemCad" class="text-gray-600 mb-6"></p>
+        <button onclick="fecharEAntilimparURL()" class="px-6 py-2 bg-azul-escuro text-white font-medium rounded-md">OK</button>
+    </dialog>
+
+    <script src="JAVA/cadscript.js"></script>
+</body>
+</html>

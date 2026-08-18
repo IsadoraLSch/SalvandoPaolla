@@ -1,43 +1,45 @@
 <?php
-//Segundo Crud, melhorando o primeiro Crud
 
-//para fazer esse funcionar, é necessario abrir o workbench, criar uma database escola e uma tabela aluno com todas as informações necessarias desse php (vai ficar escrito escola.aluno)
+include "conf.inc.php";
 
-define ('usuario', 'root');
-define ('senha',  '');
-define ('host', 'localhost');
-define ('porta', '3306');
-define ('bd', 'escola');
-define ('dsn', 'mysql:host=' . host . ';port=' . porta . ';dbname=' . bd);
-
-//Pega as informações do formulário
+$id = $_POST['id'] ?? 0;
 $nome = $_POST['nome'] ?? '';
 $email = $_POST['email'] ?? '';
 $matricula = $_POST['matricula'] ?? '';
-$senhaAluno = $_POST['senha'] ?? '';
+$senha = $_POST['senha'] ?? '';
 
-if ($nome != '') {
+$conexao = new PDO(dsn, usuario, senha);
 
-    //Conexão com o banco de dados
-    $conexao = new PDO(dsn, usuario, senha);
+if ($id > 0) {
 
-    //Montar SQL
-    $SQL = 'INSERT INTO aluno (nome, email, matricula, senha) VALUES (:nome, :email, :matricula, :senha)';
+    // UPDATE
+    $SQL = "UPDATE aluno 
+            SET nome = :nome,
+                email = :email,
+                matricula = :matricula
+            WHERE id = :id";
 
-    //Preparar
-    $comando = $conexao->prepare($SQL);
+    $consulta = $conexao->prepare($SQL);
+    $consulta->bindValue(':id', $id);
 
-    //Bind
-    $comando->bindValue(':nome', $nome);
-    $comando->bindValue(':email', $email);
-    $comando->bindValue(':matricula', $matricula);
-    $comando->bindValue(':senha', $senhaAluno);
+} else {
+
+    // INSERT
+    $SQL = "INSERT INTO aluno (nome, email, matricula, senha) 
+            VALUES (:nome, :email, :matricula, :senha)";
+
+    $consulta = $conexao->prepare($SQL);
+    $consulta->bindValue(':senha', $senha);
+}
+
+$consulta->bindValue(':nome', $nome);
+$consulta->bindValue(':email', $email);
+$consulta->bindValue(':matricula', $matricula);
 
     //Executar
-    if ($comando->execute()){
+    if ($consulta->execute()){
         echo 'Dados inseridos com sucesso';
     } else {
         echo 'Erro ao inserir dados no banco';
     }
-}
 ?>

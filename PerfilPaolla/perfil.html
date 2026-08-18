@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil - PaoLLa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'azul-claro': '#7AA9A3',
+            'azul-escuro': '#1C4C70',
+            'amarelo-fundo': '#FFE8BD',
+            'azul-btn': '#338F9A',
+          },
+          fontFamily: {
+            'vietnam': ['"Be Vietnam Pro"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-amarelo-fundo min-h-screen font-vietnam flex flex-col justify-between select-none">
+
+  <header class="bg-azul-claro px-6 py-4 flex justify-between items-center relative border-b-4 border-dashed border-azul-escuro/20">
+    <a href="#">
+      <img src="caminho/para/logo-paolla.png" alt="PaoLLa" class="h-10 sm:h-12 w-auto object-contain" />
+    </a>
+
+    <div class="flex items-center space-x-3">
+      <button class="bg-amarelo-fundo p-2 rounded-full text-azul-claro hover:opacity-90 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+      
+      <button class="bg-amarelo-fundo p-2 rounded-full text-azul-claro hover:opacity-90 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-[100%] w-full mx-auto p-4 flex flex-col">
+    
+    <div class="relative my-6">
+      <div class="absolute -top-3 right-4 left-4 border-b-2 border-dashed border-azul-escuro/40"></div>
+      
+      <div class="bg-azul-claro [clip-path:polygon(00-1,_92%_0%,_100%_50%,_92%_100%,_0%_100%)] border-2 border-dashed border-azul-escuro p-4 pr-12 flex flex-col sm:flex-row items-center justify-between relative shadow-sm rounded-l-full">
+  
+        <div class="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-6">
+          <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-dashed border-azul-escuro bg-slate-600 flex items-center justify-center relative overflow-hidden flex-shrink-0">
+            <div class="w-16 h-16 bg-white rounded-full flex flex-col items-center justify-center relative mt-4">
+              <div class="flex space-x-3 mb-1">
+                <div class="w-1.5 h-1.5 bg-azul-escuro rounded-full"></div>
+                <div class="w-1.5 h-1.5 bg-azul-escuro rounded-full"></div>
+              </div>
+              <div class="w-5 h-2 border-b-2 border-azul-escuro rounded-full"></div>
+            </div>
+          </div>
+      
+          <div class="text-amarelo-fundo text-lg sm:text-xl font-semibold tracking-wide text-center sm:text-left space-y-1">
+            <p>nome</p>
+            <p>alunos</p>
+            <p>obras</p>
+          </div>
+        </div>
+      
+        <div class="flex items-center space-x-2 mt-4 sm:mt-0 mr-8 sm:mr-14">
+          <button class="bg-azul-btn hover:brightness-95 text-amarelo-fundo p-2.5 rounded-lg border border-azul-escuro/30 transition shadow-sm" title="Editar">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
+          </button>
+      
+          <button class="bg-azul-btn hover:brightness-95 text-amarelo-fundo p-2.5 rounded-lg border border-azul-escuro/30 transition shadow-sm" title="Excluir">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </button>
+        </div>
+      
+      </div>
+
+      <div class="absolute -bottom-3 right-2 left-1/2 border-b-2 border-dashed border-azul-escuro/40"></div>
+    </div>
+
+    <nav id="nav-container" class="relative flex flex-wrap items-center justify-center sm:justify-start gap-1 my-4 px-2 text-azul-escuro font-bold">
+      <div id="tab-indicator" class="absolute bg-azul-claro rounded-t-2xl transition-all duration-300 ease-out h-full top-0 left-0 pointer-events-none shadow-inner"></div>
+
+      <button class="tab-btn relative z-10 px-6 py-2 rounded-t-2xl text-lg font-extrabold transition-colors duration-200" onclick="switchTab(this, 'obras')">
+        Obras
+      </button>
+      <button class="tab-btn relative z-10 px-6 py-2 rounded-t-2xl text-lg transition-colors duration-200 hover:text-azul-claro" onclick="switchTab(this, 'favoritos')">
+        Favoritos
+      </button>
+      <button class="tab-btn relative z-10 px-6 py-2 rounded-t-2xl text-lg transition-colors duration-200 hover:text-azul-claro" onclick="switchTab(this, 'turmas')">
+        Turmas
+      </button>
+      <button class="tab-btn relative z-10 px-6 py-2 rounded-t-2xl text-lg transition-colors duration-200 hover:text-azul-claro" onclick="switchTab(this, 'historico')">
+        Histórico
+      </button>
+      <button class="tab-btn relative z-10 px-6 py-2 rounded-t-2xl text-lg transition-colors duration-200 hover:text-azul-claro" onclick="switchTab(this, 'ideias')">
+        Idéias
+      </button>
+    </nav>
+
+    <section class="bg-azul-claro rounded-3xl p-6 sm:p-8 flex-1 min-h-[300px] flex flex-col justify-between relative shadow-md">
+      
+      <div id="content-obras" class="tab-content grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4 justify-start items-start">
+        <div class="relative group cursor-pointer w-36 sm:w-44">
+          <div class="bg-azul-escuro rounded-2xl p-1.5 shadow-lg transform transition group-hover:-translate-y-1">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://m.media-amazon.com/images/I/81I233W8H2L._AC_UF1000,1000_QL80_.jpg" alt="Você de Novo" class="w-full h-52 sm:h-56 object-cover rounded-lg" />
+            </div>
+          </div>
+        </div>
+      
+        <div class="relative group cursor-pointer w-36 sm:w-44">
+          <div class="bg-azul-escuro rounded-2xl p-1.5 shadow-lg transform transition group-hover:-translate-y-1">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://m.media-amazon.com/images/I/719f-wIuG4L._AC_UF1000,1000_QL80_.jpg" alt="Sonhando com Você" class="w-full h-52 sm:h-56 object-cover rounded-lg" />
+            </div>
+          </div>
+        </div>
+      
+        <div class="relative group cursor-pointer w-36 sm:w-44">
+          <div class="bg-azul-escuro rounded-2xl p-1.5 shadow-lg transform transition group-hover:-translate-y-1">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://m.media-amazon.com/images/I/81xU-m-4C+L._AC_UF1000,1000_QL80_.jpg" alt="Eros a Primeira Vista" class="w-full h-52 sm:h-56 object-cover rounded-lg" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="content-favoritos" class="tab-content hidden text-azul-escuro font-bold text-xl">
+        Aba de Favoritos
+      </div>
+      <div id="content-turmas" class="tab-content hidden text-azul-escuro font-bold text-xl">
+        Aba de Turmas
+      </div>
+      <div id="content-historico" class="tab-content hidden text-azul-escuro font-bold text-xl">
+        Aba de Histórico
+      </div>
+      <div id="content-ideias" class="tab-content hidden text-azul-escuro font-bold text-xl">
+        Aba de Idéias
+      </div>
+
+      <div class="flex justify-center mt-8">
+        <button class="bg-azul-escuro hover:bg-azul-escuro/90 text-amarelo-fundo p-3 rounded-full shadow-lg transition transform hover:scale-110 border-2 border-azul-claro">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+        </button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="JAVA/perfilscript.js"></script>
+</body>
+</html>
